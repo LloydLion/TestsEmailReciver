@@ -9,13 +9,16 @@
         MinWidth="700" MinHeight="600"
         ResizeMode="CanResizeWithGrip"
 		Title="MainWindow" Height="700" Width="1000">
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="auto"/>
-			<ColumnDefinition/>
-		</Grid.ColumnDefinitions>
+    <Window.Resources>
+        <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-        <ListView Grid.Column="0" ItemsSource="{Binding Path=Records}" Margin="5" SelectedItem="{Binding Path=SelectedRecord, Mode=TwoWay}">  
+        <ListView Grid.Column="0" ItemsSource="{Binding Path=Records}" Margin="5" SelectedItem="{Binding Path=SelectedRecord, Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -38,7 +41,7 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <StackPanel Grid.Column="1" DataContext="{Binding Path=SelectedRecord}" Margin="5">
+        <StackPanel Grid.Column="1" DataContext="{Binding Path=SelectedRecord}" Margin="5" Visibility="{Binding Path=., Converter={StaticResource ResourceKey=NullToVisibilityConverter}}">
             <TextBlock FontSize="40" FontFamily="Bold" TextWrapping="Wrap">
                 <Run Text="Результаты теста "/>
                 <Run Text="{Binding Path=TestName}"/>
@@ -54,15 +57,15 @@
                 <Run Text=" баллов"/>
                 <Run Text="{Binding Path=Percentage, StringFormat=(\{0\}%)}"/>
             </TextBlock>
-            
+
             <TextBlock><LineBreak/><LineBreak/></TextBlock>
-            
-            <TextBlock FontSize="15" Text="{Binding Path=PassDate, StringFormat=Дата\ прохожедния \{0\}, TargetNullValue=Не\ указано}"/>
-            <TextBlock FontSize="15" Text="{Binding Path=PassingTime, StringFormat=Время\ прохожедния \{0\}, TargetNullValue=Не\ указано}"/>
+
+            <TextBlock FontSize="15" Text="{Binding Path=PassDate, StringFormat=Дата\ прохожедния: \{0\}, TargetNullValue=Дата\ прохожедния:\ Не\ указано}"/>
+            <TextBlock FontSize="15" Text="{Binding Path=PassingTime, StringFormat=Время\ прохожедния: \{0\}, TargetNullValue=Время\ прохожедния:\ Не\ указано}"/>
 
             <TextBlock><LineBreak/></TextBlock>
 
-            <TextBlock FontSize="15"><local:ExternalBrowserHyperlink NavigateUri="{Binding Path=Url}">Просмотреть в интернете</local:ExternalBrowserHyperlink></TextBlock> 
+            <TextBlock FontSize="15"><local:ExternalBrowserHyperlink NavigateUri="{Binding Path=Url}">Просмотреть в интернете</local:ExternalBrowserHyperlink></TextBlock>
         </StackPanel>
-	</Grid>
+    </Grid>
 </Window>
