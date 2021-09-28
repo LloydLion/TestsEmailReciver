@@ -1,0 +1,68 @@
+﻿<Window x:Class="TestsEmailReciver.MainWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:TestsEmailReciver" d:DataContext="{d:DesignInstance Type=local:MainWindowsViewModel}"
+        mc:Ignorable="d"
+        MaxWidth="1400"
+        MinWidth="700" MinHeight="600"
+        ResizeMode="CanResizeWithGrip"
+		Title="MainWindow" Height="700" Width="1000">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+
+        <ListView Grid.Column="0" ItemsSource="{Binding Path=Records}" Margin="5" SelectedItem="{Binding Path=SelectedRecord, Mode=TwoWay}">  
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Rectangle Fill="#F3F3F3" Margin="-20 0 -20 0"/>
+                        <StackPanel Height="auto" MinWidth="170" Margin="0 10 0 10">
+                            <TextBlock FontSize="20" FontFamily="Bold" Text="{Binding Path=StudentName}"/>
+                            <TextBlock FontSize="20" FontFamily="Bold" Text="{Binding Path=TestName}"/>
+                            <Grid>
+                                <TextBlock FontSize="15" Text="{Binding Path=Class}" HorizontalAlignment="Left"/>
+                                <TextBlock FontSize="15" Text="{Binding Path=Mark, StringFormat=Оценка: \{0\}}" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <TextBlock HorizontalAlignment="Right" FontSize="15">
+                                <Run Text="Баллы: "/>
+                                <Run Text="{Binding Path=Scores}"/>
+                                <Run Text="{Binding Path=Percentage, StringFormat=(\{0\}%)}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <StackPanel Grid.Column="1" DataContext="{Binding Path=SelectedRecord}" Margin="5">
+            <TextBlock FontSize="40" FontFamily="Bold" TextWrapping="Wrap">
+                <Run Text="Результаты теста "/>
+                <Run Text="{Binding Path=TestName}"/>
+                <LineBreak/>
+                <Run Text="{Binding Path=StudentName}"/>
+            </TextBlock>
+            <TextBlock FontSize="25" Text="{Binding Path=Class, StringFormat=Класс: \{0\}}"/>
+            <TextBlock FontSize="25">
+                <Run Text="Оценка: "/>
+                <Run Text="{Binding Path=Mark}"/>
+                <Run Text=" - "/>
+                <Run Text="{Binding Path=Scores}"/>
+                <Run Text=" баллов"/>
+                <Run Text="{Binding Path=Percentage, StringFormat=(\{0\}%)}"/>
+            </TextBlock>
+            
+            <TextBlock><LineBreak/><LineBreak/></TextBlock>
+            
+            <TextBlock FontSize="15" Text="{Binding Path=PassDate, StringFormat=Дата\ прохожедния \{0\}, TargetNullValue=Не\ указано}"/>
+            <TextBlock FontSize="15" Text="{Binding Path=PassingTime, StringFormat=Время\ прохожедния \{0\}, TargetNullValue=Не\ указано}"/>
+
+            <TextBlock><LineBreak/></TextBlock>
+
+            <TextBlock FontSize="15"><local:ExternalBrowserHyperlink NavigateUri="{Binding Path=Url}">Просмотреть в интернете</local:ExternalBrowserHyperlink></TextBlock> 
+        </StackPanel>
+	</Grid>
+</Window>
