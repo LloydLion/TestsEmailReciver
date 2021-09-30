@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace TestsEmailReciver
 {
-	class MainWindowsViewModel : INotifyPropertyChanged
+	class MainWindowViewModel : INotifyPropertyChanged
 	{
 		private TestRecord selectedRecord;
 
-		public MainWindowsViewModel(TestRecord[] records)
+		public MainWindowViewModel(INotifyEnumerable<TestRecord> records)
 		{
 			Records = records;
 		}
@@ -21,7 +21,7 @@ namespace TestsEmailReciver
 		public event PropertyChangedEventHandler PropertyChanged;
 
 
-		public ICollection<TestRecord> Records { get; }
+		public INotifyEnumerable<TestRecord> Records { get; }
 
 		public TestRecord SelectedRecord { get => selectedRecord; set { selectedRecord = value; OnPropertyChanged(); } }
 

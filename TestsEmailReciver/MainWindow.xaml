@@ -3,8 +3,8 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:TestsEmailReciver" d:DataContext="{d:DesignInstance Type=local:MainWindowsViewModel}"
-        mc:Ignorable="d"
+		xmlns:local="clr-namespace:TestsEmailReciver" d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
+        mc:Ignorable="d" SizeChanged="Window_SizeChanged"
         MaxWidth="1400"
         MinWidth="700" MinHeight="600"
         ResizeMode="CanResizeWithGrip"
@@ -14,18 +14,19 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <ListView Grid.Column="0" ItemsSource="{Binding Path=Records}" Margin="5" SelectedItem="{Binding Path=SelectedRecord, Mode=TwoWay}">
+        <ListView Grid.Column="0" ItemsSource="{Binding Path=Records}" Margin="5"
+                  SelectedItem="{Binding Path=SelectedRecord, Mode=TwoWay}" x:Name="listView">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <Rectangle Fill="#F3F3F3" Margin="-20 0 -20 0"/>
-                        <StackPanel Height="auto" MinWidth="170" Margin="0 10 0 10">
+                        <Rectangle Fill="#F3F3F3" Margin="-3 0 -3 0"/>
+                        <StackPanel Height="auto" Margin="0 10 0 10">
                             <TextBlock FontSize="20" FontFamily="Bold" Text="{Binding Path=StudentName}"/>
-                            <TextBlock FontSize="20" FontFamily="Bold" Text="{Binding Path=TestName}"/>
+                            <TextBlock Height="auto" FontSize="20" FontFamily="Bold" Text="{Binding Path=TestName}" TextWrapping="Wrap"/>
                             <Grid>
                                 <TextBlock FontSize="15" Text="{Binding Path=Class}" HorizontalAlignment="Left"/>
                                 <TextBlock FontSize="15" Text="{Binding Path=Mark, StringFormat=Оценка: \{0\}}" HorizontalAlignment="Right"/>
