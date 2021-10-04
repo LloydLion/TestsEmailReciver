@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="icons8_male_user.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Mail.dll" Version="3.0.21267.1221" />
   </ItemGroup>
 

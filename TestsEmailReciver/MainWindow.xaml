@@ -4,7 +4,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:TestsEmailReciver" d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
-        mc:Ignorable="d" SizeChanged="Window_SizeChanged"
+        mc:Ignorable="d"
         MaxWidth="1400"
         MinWidth="700" MinHeight="600"
         ResizeMode="CanResizeWithGrip"
@@ -12,61 +12,98 @@
     <Window.Resources>
         <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     </Window.Resources>
+
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-        <ListView Grid.Column="0" ItemsSource="{Binding Path=Records}" Margin="5"
-                  SelectedItem="{Binding Path=SelectedRecord, Mode=TwoWay}" x:Name="listView">
-            <ListView.ItemTemplate>
-                <DataTemplate>
+        <Button HorizontalAlignment="Right" Margin="5 2 10 2" Content="Аккаунт"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+
+                <StackPanel Grid.Row="0" Margin="5">
                     <Grid>
-                        <Rectangle Fill="#F3F3F3" Margin="-3 0 -3 0"/>
-                        <StackPanel Height="auto" Margin="0 10 0 10">
-                            <TextBlock FontSize="20" FontFamily="Bold" Text="{Binding Path=StudentName}"/>
-                            <TextBlock Height="auto" FontSize="20" FontFamily="Bold" Text="{Binding Path=TestName}" TextWrapping="Wrap"/>
-                            <Grid>
-                                <TextBlock FontSize="15" Text="{Binding Path=Class}" HorizontalAlignment="Left"/>
-                                <TextBlock FontSize="15" Text="{Binding Path=Mark, StringFormat=Оценка: \{0\}}" HorizontalAlignment="Right"/>
-                            </Grid>
-                            <TextBlock HorizontalAlignment="Right" FontSize="15">
-                                <Run Text="Баллы: "/>
-                                <Run Text="{Binding Path=Scores}"/>
-                                <Run Text="{Binding Path=Percentage, StringFormat=(\{0\}%)}"/>
-                            </TextBlock>
-                        </StackPanel>
+                        <Label Content="Фильтры:"/>
+                        <Button Content="Обновить" HorizontalAlignment="Right" Margin="2 2 40 2" Command="{Binding Path=RefreshCommand}"/>
                     </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                    
+                    <ComboBox Margin="2"/>
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="20*"/>
+                        </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="1" DataContext="{Binding Path=SelectedRecord}" Margin="5" Visibility="{Binding Path=., Converter={StaticResource ResourceKey=NullToVisibilityConverter}}">
-            <TextBlock FontSize="40" FontFamily="Bold" TextWrapping="Wrap">
-                <Run Text="Результаты теста "/>
-                <Run Text="{Binding Path=TestName}"/>
-                <LineBreak/>
-                <Run Text="{Binding Path=StudentName}"/>
-            </TextBlock>
-            <TextBlock FontSize="25" Text="{Binding Path=Class, StringFormat=Класс: \{0\}}"/>
-            <TextBlock FontSize="25">
-                <Run Text="Оценка: "/>
-                <Run Text="{Binding Path=Mark}"/>
-                <Run Text=" - "/>
-                <Run Text="{Binding Path=Scores}"/>
-                <Run Text=" баллов"/>
-                <Run Text="{Binding Path=Percentage, StringFormat=(\{0\}%)}"/>
-            </TextBlock>
+                        <ComboBox Margin="2" Grid.Column="0"/>
+                        <TextBox Margin="2" Grid.Column="1"/>
+                    </Grid>
+                </StackPanel>
 
-            <TextBlock><LineBreak/><LineBreak/></TextBlock>
+                <ListView Grid.Row="1" ItemsSource="{Binding Path=Records}" Margin="5" HorizontalContentAlignment="Stretch"
+                         SelectedItem="{Binding Path=SelectedRecord, Mode=TwoWay}" x:Name="listView">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Rectangle Fill="#F3F3F3" Margin="-3 0 -3 0"/>
+                                <StackPanel Height="auto" MaxWidth="{Binding ElementName=listView, Path=ActualWidth}" Margin="0 10 0 10">
+                                    <TextBlock FontSize="20" FontFamily="Bold" Text="{Binding Path=StudentName}"/>
+                                    <TextBlock FontSize="20" FontFamily="Bold" Text="{Binding Path=TestName}" TextWrapping="Wrap"/>
+                                    <Grid>
+                                        <TextBlock FontSize="15" Text="{Binding Path=Class}" HorizontalAlignment="Left"/>
+                                        <TextBlock FontSize="15" Text="{Binding Path=Mark, StringFormat=Оценка: \{0\}}" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <TextBlock HorizontalAlignment="Right" FontSize="15">
+                                        <Run Text="Баллы: "/>
+                                        <Run Text="{Binding Path=Scores}"/>
+                                        <Run Text="{Binding Path=Percentage, StringFormat=(\{0\}%)}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
 
-            <TextBlock FontSize="15" Text="{Binding Path=PassDate, StringFormat=Дата\ прохожедния: \{0\}, TargetNullValue=Дата\ прохожедния:\ Не\ указано}"/>
-            <TextBlock FontSize="15" Text="{Binding Path=PassingTime, StringFormat=Время\ прохожедния: \{0\}, TargetNullValue=Время\ прохожедния:\ Не\ указано}"/>
+            <StackPanel Grid.Column="1" DataContext="{Binding Path=SelectedRecord}" Margin="5" Visibility="{Binding Path=., Converter={StaticResource ResourceKey=NullToVisibilityConverter}}">
+                <TextBlock FontSize="40" FontFamily="Bold" TextWrapping="Wrap">
+                    <Run Text="Результаты теста "/>
+                    <Run Text="{Binding Path=TestName}"/>
+                    <LineBreak/>
+                    <Run Text="{Binding Path=StudentName}"/>
+                </TextBlock>
+                <TextBlock FontSize="25" Text="{Binding Path=Class, StringFormat=Класс: \{0\}}"/>
+                <TextBlock FontSize="25">
+                    <Run Text="Оценка: "/>
+                    <Run Text="{Binding Path=Mark}"/>
+                    <Run Text=" - "/>
+                    <Run Text="{Binding Path=Scores}"/>
+                    <Run Text=" баллов"/>
+                    <Run Text="{Binding Path=Percentage, StringFormat=(\{0\}%)}"/>
+                </TextBlock>
 
-            <TextBlock><LineBreak/></TextBlock>
+                <TextBlock><LineBreak/><LineBreak/></TextBlock>
 
-            <TextBlock FontSize="15"><local:ExternalBrowserHyperlink NavigateUri="{Binding Path=Url}">Просмотреть в интернете</local:ExternalBrowserHyperlink></TextBlock>
-        </StackPanel>
+                <TextBlock FontSize="15" Text="{Binding Path=PassDate, StringFormat=Дата\ прохожедния: \{0\}, TargetNullValue=Дата\ прохожедния:\ Не\ указано}"/>
+                <TextBlock FontSize="15" Text="{Binding Path=PassingTime, StringFormat=Время\ прохожедния: \{0\}, TargetNullValue=Время\ прохожедния:\ Не\ указано}"/>
+
+                <TextBlock><LineBreak/></TextBlock>
+
+                <TextBlock FontSize="15"><local:ExternalBrowserHyperlink NavigateUri="{Binding Path=Url}">Просмотреть в интернете</local:ExternalBrowserHyperlink></TextBlock>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
