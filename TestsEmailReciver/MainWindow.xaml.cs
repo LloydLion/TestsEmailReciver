@@ -19,11 +19,61 @@ namespace TestsEmailReciver
 {
 	public partial class MainWindow : Window
 	{
+		private Filtrator<TestRecord>.FilterHandler? secondFilterHandler;
+		private Filtrator<TestRecord>.FilterHandler? primaryFilterHandler;
+
+
+		private MainWindowViewModel ViewModel => (MainWindowViewModel)DataContext;
+
+
 		public MainWindow()
 		{
 			InitializeComponent();
 
 			DataContext = App.StartupDataContext;
+		}
+
+
+		private void FilterTypeComboBox_Selected(object sender, SelectionChangedEventArgs e)
+		{
+			var box = (ComboBox)sender;
+			secondFilterHandler?.DisableFilter();
+
+			switch (box.SelectedIndex)
+			{
+				case 0:
+					secondFilterHandler = null;
+					break;
+				case 1:
+					secondFilterHandler = ViewModel.SetFilter("name", filterValueTextBox.Text);
+					break;
+				case 2:
+					secondFilterHandler = ViewModel.SetFilter("class", filterValueTextBox.Text);
+					break;
+			}
+		}
+		
+		private void TestsComboBox_Selected(object sender, SelectionChangedEventArgs e)
+		{
+			var box = (ComboBox)sender;
+			primaryFilterHandler?.DisableFilter();
+
+			if (box.SelectedIndex == 0) primaryFilterHandler = null;
+			else
+			{
+				primaryFilterHandler = ViewModel.SetFilter("test", e.AddedItems[0].ToString());
+			}
+		}
+
+		private void FilterValueTextBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			var text = (TextBox)sender;
+			secondFilterHandler?.DisableFilter();
+			
+			if(secondFilterHandler.HasValue)
+			{
+				ViewModel.SetFilter(secondFilterHandler.Value.UniqueKey, text.Text);
+			}
 		}
 	}
 }

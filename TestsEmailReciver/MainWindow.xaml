@@ -3,14 +3,19 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:TestsEmailReciver" d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
+		xmlns:local="clr-namespace:TestsEmailReciver"
+		xmlns:sys="clr-namespace:System;assembly=System.Core"
+        d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
+        Title="Tests Email Reciver"
         mc:Ignorable="d"
         MaxWidth="1400"
         MinWidth="700" MinHeight="600"
         ResizeMode="CanResizeWithGrip"
-		Title="MainWindow" Height="700" Width="1000">
+		Height="700" Width="1000">
     <Window.Resources>
         <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <local:DirectMultiConverter x:Key="DirectMultiConverter"/>
+        <local:AddElementConverter x:Key="AddElementConverter" NewElement="Без фильтра"/>
     </Window.Resources>
 
     <Grid>
@@ -39,17 +44,24 @@
                         <Label Content="Фильтры:"/>
                         <Button Content="Обновить" HorizontalAlignment="Right" Margin="2 2 40 2" Command="{Binding Path=RefreshCommand}"/>
                     </Grid>
-                    
-                    <ComboBox Margin="2"/>
+
+                    <ComboBox Margin="2" SelectedIndex="0" SelectionChanged="TestsComboBox_Selected" ItemsSource="{Binding Path=Tests, Converter={StaticResource ResourceKey=AddElementConverter}}"/>
                     
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="8*"/>
-                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="11*"/>
+                            <ColumnDefinition Width="19*"/>
                         </Grid.ColumnDefinitions>
 
-                        <ComboBox Margin="2" Grid.Column="0"/>
-                        <TextBox Margin="2" Grid.Column="1"/>
+                        <ComboBox Margin="2" Grid.Column="0" SelectedIndex="0" SelectionChanged="FilterTypeComboBox_Selected" >
+                            <ComboBox.Items>
+                                <sys:String>Без фильтра</sys:String>
+                                <sys:String>Ученик</sys:String>
+                                <sys:String>Класс</sys:String>
+                            </ComboBox.Items>
+                        </ComboBox>
+                        
+                        <TextBox Margin="2" Grid.Column="1" x:Name="filterValueTextBox" TextChanged="FilterValueTextBox_TextChanged"/>
                     </Grid>
                 </StackPanel>
 
