@@ -30,7 +30,13 @@ namespace TestsEmailReciver
 		{
 			InitializeComponent();
 
-			DataContext = App.StartupDataContext;
+			(Application.Current as App).Account.NewAccountUsed += (s, a) =>
+			{
+				DataContext = (Application.Current as App).StartupDataContext;
+				ViewModel.RefreshEmails();
+			};
+
+			DataContext = (Application.Current as App).StartupDataContext;
 		}
 
 

@@ -12,6 +12,16 @@
 
   <ItemGroup>
     <PackageReference Include="Mail.dll" Version="3.0.21267.1221" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LloydLion.Serialization.Common">
+      <HintPath>..\libs\LloydLion.Serialization.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="LloydLion.Serialization.Json">
+      <HintPath>..\libs\LloydLion.Serialization.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

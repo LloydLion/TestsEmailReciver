@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -31,6 +32,7 @@ namespace TestsEmailReciver
 
 			RefreshCommand = new DelegateCommand(RefreshCommandDelegate);
 			SetFilterCommand = new DelegateCommand<string[]>(s => SetFilter(s[0], s[1]));
+			OpenAccountWindowCommand = new DelegateCommand(OpenAccountWindow);
 		}
 
 
@@ -40,6 +42,8 @@ namespace TestsEmailReciver
 		public ICommand RefreshCommand { get; }
 
 		public ICommand SetFilterCommand { get; }
+
+		public ICommand OpenAccountWindowCommand { get; }
 
 
 		private IReadOnlyList<TestRecord> PureRecords { get => pureRecords; set { pureRecords = value; OnPropertyChanged(nameof(Records)); OnPropertyChanged(nameof(Tests)); } }
@@ -66,13 +70,13 @@ namespace TestsEmailReciver
 			try
 			{
 				RefreshEmails();
+				MessageBox.Show("Письма обновлены", "Успех загруски");
 			}
 			catch(Exception)
 			{
 				MessageBox.Show("Невозможно загрузить письма. Проверьте интернет или правельность данных аккаунта.", "Ошибка загруски");
 			}
 
-			MessageBox.Show("Письма обновлены", "Успех загруски");
 		}
 
 		public void RefreshEmails()
@@ -91,6 +95,28 @@ namespace TestsEmailReciver
 				"test" => filtrator.AddFilter(new Filtrator<TestRecord>.Filter("test", (a) => a.TestName == value)),
 				_ => throw new ArgumentException("Invalid filter code - " + filterCode, nameof(filterCode)),
 			};
+		}
+
+		public void OpenAccountWindow()
+		{
+		invalidData:
+			var window = new AccountSettingsWindow((Application.Current as App).Account.Account);
+			window.ShowDialog();
+
+			MessageBox.Show("Сейчас будут загружены новые письма с почты. Это может занять много времени.", "Уведомление");
+
+			try
+			{
+				(Application.Current as App).Account.UseNewAccount(window.NewAccount);
+				MessageBox.Show("Письма обновлены", "Успех загруски");
+			}
+			catch (Exception)
+			{
+				MessageBox.Show("Невозможно загрузить письма. Проверьте интернет или правельность данных аккаунта.", "Ошибка загруски");
+				goto invalidData;
+			}
+
+			(Application.Current as App).Account.SaveAccount();
 		}
 	}
 }

@@ -24,7 +24,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Button HorizontalAlignment="Right" Margin="5 2 10 2" Content="Аккаунт"/>
+        <Button HorizontalAlignment="Right" Margin="5 2 10 2" Content="Аккаунт" Command="{Binding Path=OpenAccountWindowCommand}"/>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

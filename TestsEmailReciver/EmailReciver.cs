@@ -16,10 +16,10 @@ namespace TestsEmailReciver
 		private Imap client;
 
 
-		public AccauntInfo Info { get; }
+		public AccountInfo Info { get; }
 
 
-		public EmailReciver(AccauntInfo info)
+		public EmailReciver(AccountInfo info)
 		{
 			Info = info;
 		}
