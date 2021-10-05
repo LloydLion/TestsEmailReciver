@@ -18,6 +18,7 @@ namespace TestsEmailReciver
 		private readonly Filtrator<TestRecord> filtrator = new();
 		private readonly EmailReciver reciver;
 		private readonly TestRecordComposeParser parser;
+		private EmailReciver.EmailDownloader emailLoader;
 
 
 		public MainWindowViewModel(EmailReciver reciver, TestRecordComposeParser parser)
@@ -33,6 +34,7 @@ namespace TestsEmailReciver
 			RefreshCommand = new DelegateCommand(RefreshCommandDelegate);
 			SetFilterCommand = new DelegateCommand<string[]>(s => SetFilter(s[0], s[1]));
 			OpenAccountWindowCommand = new DelegateCommand(OpenAccountWindow);
+			LoadMoreEmailsCommand = new DelegateCommand<int>(LoadMoreEmailsCommandDelegate, s => s >= 0);
 		}
 
 
@@ -44,6 +46,8 @@ namespace TestsEmailReciver
 		public ICommand SetFilterCommand { get; }
 
 		public ICommand OpenAccountWindowCommand { get; }
+
+		public ICommand LoadMoreEmailsCommand { get; }
 
 
 		private IReadOnlyList<TestRecord> PureRecords { get => pureRecords; set { pureRecords = value; OnPropertyChanged(nameof(Records)); OnPropertyChanged(nameof(Tests)); } }
@@ -81,9 +85,36 @@ namespace TestsEmailReciver
 
 		public void RefreshEmails()
 		{
-			var emailCol = reciver.GetInbox();
+			emailLoader = reciver.GetInbox();
+			LoadEmails(35);
+		}
 
-			pureRecords = emailCol.Select(s => (parser.Parse(s.From[0].Address, s.Html, out _, out bool canParse), canParse)).Where(s => s.canParse).Select(s => s.Item1).ToList();
+		public void LoadEmails(int count)
+		{
+			PureRecords = emailLoader.Load(count).Select(s => (parser.Parse(s.From[0].Address, s.Html, out _, out bool canParse), canParse)).Where(s => s.canParse).Select(s => s.Item1).ToList();
+		}
+
+		public void LoadMoreEmails(int count)
+		{
+			PureRecords = emailLoader.LoadMore(count).Select(s => (parser.Parse(s.From[0].Address, s.Html, out _, out bool canParse), canParse)).Where(s => s.canParse).Select(s => s.Item1).ToList();
+		}
+
+		private void LoadMoreEmailsCommandDelegate(int count)
+		{
+			var res = MessageBox.Show("Получение новых писем с электронной почты может занять много времени.\n" +
+						"Вы уверены, что хотите продолжить?", "Предупреждение о долгой операции", MessageBoxButton.OKCancel);
+
+			if (res == MessageBoxResult.Cancel) return;
+
+			try
+			{
+				LoadMoreEmails(count);
+				MessageBox.Show("Письма обновлены", "Успех загруски");
+			}
+			catch (Exception)
+			{
+				MessageBox.Show("Невозможно загрузить письма. Проверьте интернет или правельность данных аккаунта.", "Ошибка загруски");
+			}
 		}
 
 		public Filtrator<TestRecord>.FilterHandler SetFilter(string filterCode, string value)
