@@ -4,10 +4,18 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Images/ter.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="icons8_male_user.ico" />
+    <None Remove="Images\superelipse.png" />
+    <None Remove="Иконка Tests Email Reciver.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\superelipse.png" />
+    <Resource Include="Images\ter.ico" />
   </ItemGroup>
 
   <ItemGroup>

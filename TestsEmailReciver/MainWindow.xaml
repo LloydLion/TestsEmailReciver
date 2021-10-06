@@ -7,6 +7,7 @@
 		xmlns:local="clr-namespace:TestsEmailReciver"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         Title="Tests Email Reciver"
+        Icon="Images/ter.ico"
         mc:Ignorable="d"
         MaxWidth="1400"
         MinWidth="860" MinHeight="600"
@@ -17,6 +18,30 @@
         <local:DirectMultiConverter x:Key="DirectMultiConverter"/>
         <local:AddElementConverter x:Key="AddElementConverter" NewElement="Без фильтра"/>
         <local:CountConverter x:Key="CountConverter"/>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="10"/>
+                    <Setter Property="Padding" Value="2"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="10"/>
+                    <Setter Property="Padding" Value="5 2 5 2"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <Style TargetType="{x:Type ListView}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#D3D3D3"/>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -25,7 +50,8 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Button HorizontalAlignment="Right" Margin="5 2 10 2" Content="Аккаунт" Command="{Binding Path=OpenAccountWindowCommand}"/>
+        <Button HorizontalAlignment="Right" Margin="5 2 10 2" Content="Аккаунт"
+                Command="{Binding Path=OpenAccountWindowCommand}"/>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -49,7 +75,8 @@
                                 <Run Text="/"/>
                                 <Run Text="{Binding Path=LoadedEmails, Mode=OneWay}"/>
                             </TextBlock>
-                            <Button Content="Обновить" HorizontalAlignment="Right" Margin="2" Command="{Binding Path=RefreshCommand}"/>
+                            <Button Content="Обновить" HorizontalAlignment="Right" Margin="2"
+                                    Command="{Binding Path=RefreshCommand}"/>
                             <Button Content="Загрузить ещё" Margin="2" Command="{Binding Path=LoadMoreEmailsCommand}">
                                 <Button.CommandParameter>
                                     <sys:Int32>30</sys:Int32>
@@ -58,7 +85,7 @@
                         </StackPanel>
                     </Grid>
 
-                    <ComboBox Margin="2" SelectedIndex="0" SelectionChanged="TestsComboBox_Selected"
+                    <ComboBox Margin="2" SelectedIndex="0" SelectionChanged="TestsComboBox_Selected" BorderThickness="0"
                               ItemsSource="{Binding Path=Tests, Converter={StaticResource ResourceKey=AddElementConverter}}"/>
                     
                     <Grid>
@@ -67,14 +94,14 @@
                             <ColumnDefinition Width="19*"/>
                         </Grid.ColumnDefinitions>
 
-                        <ComboBox Margin="2" Grid.Column="0" SelectedIndex="0" SelectionChanged="FilterTypeComboBox_Selected" >
+                        <ComboBox Margin="2" Grid.Column="0" SelectedIndex="0" SelectionChanged="FilterTypeComboBox_Selected" BorderThickness="0">
                             <ComboBox.Items>
                                 <sys:String>Без фильтра</sys:String>
                                 <sys:String>Ученик</sys:String>
                                 <sys:String>Класс</sys:String>
                             </ComboBox.Items>
                         </ComboBox>
-                        
+
                         <TextBox Margin="2" Grid.Column="1" x:Name="filterValueTextBox" TextChanged="FilterValueTextBox_TextChanged"/>
                     </Grid>
                 </StackPanel>
