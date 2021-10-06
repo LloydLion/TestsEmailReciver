@@ -67,6 +67,12 @@ namespace TestsEmailReciver
 			}
 
 
+			public event EventHandler NewEmailLoaded;
+
+
+			public int Loaded => cache.Count;
+
+
 			public void PreLoad()
 			{
 				var list = owner.client.Search(Flag.All);
@@ -86,6 +92,7 @@ namespace TestsEmailReciver
 					{
 						var email = new MailBuilder().CreateFromEml(owner.client.GetMessageByUID(s));
 						cache.Add(email);
+						NewEmailLoaded?.Invoke(this, new EventArgs());
 						return email;
 					}));
 				}

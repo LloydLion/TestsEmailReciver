@@ -9,13 +9,14 @@
         Title="Tests Email Reciver"
         mc:Ignorable="d"
         MaxWidth="1400"
-        MinWidth="700" MinHeight="600"
+        MinWidth="860" MinHeight="600"
         ResizeMode="CanResizeWithGrip"
 		Height="700" Width="1000">
     <Window.Resources>
         <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
         <local:DirectMultiConverter x:Key="DirectMultiConverter"/>
         <local:AddElementConverter x:Key="AddElementConverter" NewElement="Без фильтра"/>
+        <local:CountConverter x:Key="CountConverter"/>
     </Window.Resources>
 
     <Grid>
@@ -42,15 +43,23 @@
                 <StackPanel Grid.Row="0" Margin="5">
                     <Grid>
                         <Label Content="Фильтры:"/>
-                        <Button Content="Обновить" HorizontalAlignment="Right" Margin="2 2 2 2" Command="{Binding Path=RefreshCommand}"/>
-                        <Button Content="Загрузить ещё" HorizontalAlignment="Right" Margin="2 2 70 2" Command="{Binding Path=LoadMoreEmailsCommand}">
-                            <Button.CommandParameter>
-                                <sys:Int32>30</sys:Int32>
-                            </Button.CommandParameter>
-                        </Button>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Margin="2" VerticalAlignment="Bottom" ToolTip="Загружено тестов / загружено писем">
+                                <Run Text="{Binding Path=Records, Converter={StaticResource ResourceKey=CountConverter}, Mode=OneWay}"/>
+                                <Run Text="/"/>
+                                <Run Text="{Binding Path=LoadedEmails, Mode=OneWay}"/>
+                            </TextBlock>
+                            <Button Content="Обновить" HorizontalAlignment="Right" Margin="2" Command="{Binding Path=RefreshCommand}"/>
+                            <Button Content="Загрузить ещё" Margin="2" Command="{Binding Path=LoadMoreEmailsCommand}">
+                                <Button.CommandParameter>
+                                    <sys:Int32>30</sys:Int32>
+                                </Button.CommandParameter>
+                            </Button>
+                        </StackPanel>
                     </Grid>
 
-                    <ComboBox Margin="2" SelectedIndex="0" SelectionChanged="TestsComboBox_Selected" ItemsSource="{Binding Path=Tests, Converter={StaticResource ResourceKey=AddElementConverter}}"/>
+                    <ComboBox Margin="2" SelectedIndex="0" SelectionChanged="TestsComboBox_Selected"
+                              ItemsSource="{Binding Path=Tests, Converter={StaticResource ResourceKey=AddElementConverter}}"/>
                     
                     <Grid>
                         <Grid.ColumnDefinitions>

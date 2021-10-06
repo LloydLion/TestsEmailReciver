@@ -58,6 +58,8 @@ namespace TestsEmailReciver
 
 		public TestRecord SelectedRecord { get => selectedRecord; set { selectedRecord = value; OnPropertyChanged(); } }
 
+		public int LoadedEmails => emailLoader.Loaded;
+
 
 		private void OnPropertyChanged([CallerMemberName] string caller = "Caller member name")
 		{
@@ -86,7 +88,8 @@ namespace TestsEmailReciver
 		public void RefreshEmails()
 		{
 			emailLoader = reciver.GetInbox();
-			LoadEmails(35);
+			emailLoader.NewEmailLoaded += (s, a) => { OnPropertyChanged(nameof(LoadedEmails)); };
+			LoadEmails(15);
 		}
 
 		public void LoadEmails(int count)
