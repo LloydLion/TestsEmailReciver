@@ -34,5 +34,12 @@ namespace TestsEmailReciver
 		{
 			Close();
 		}
+
+		private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			if (DataContext == null) return;
+			var box = sender as TextBox;
+			(DataContext as AccountBuilder).Password = box.Text;
+		}
 	}
 }

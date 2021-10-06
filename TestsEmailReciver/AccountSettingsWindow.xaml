@@ -10,6 +10,27 @@
         
         ResizeMode="NoResize"
         Title="Аккаунт" Height="200" Width="400">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="6"/>
+                    <Setter Property="Padding" Value="5 2 5 2"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="6"/>
+                    <Setter Property="Padding" Value="5 1 5 0"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -29,7 +50,7 @@
         <TextBox Text="{Binding Path=Email}" Grid.Row="0" Grid.Column="1" Margin="5"/>
 
         <Label Content="Пароль" Grid.Row="1" Grid.Column="0"/>
-        <TextBox Text="{Binding Path=Password}" Grid.Row="1" Grid.Column="1" Margin="5"/>
+        <TextBox Text="Пароль скрыт (не изменять значение)" TextChanged="TextBox_TextChanged" Grid.Row="1" Grid.Column="1" Margin="5"/>
 
         <Label Content="Адрес IMAP сервера" Grid.Row="2" Grid.Column="0"/>
         <TextBox Text="{Binding Path=ImapServer}" Grid.Row="2" Grid.Column="1" Margin="5"/>

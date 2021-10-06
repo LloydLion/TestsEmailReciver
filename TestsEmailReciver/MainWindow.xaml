@@ -22,8 +22,8 @@
         <Style TargetType="{x:Type TextBox}">
             <Style.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="10"/>
-                    <Setter Property="Padding" Value="2"/>
+                    <Setter Property="CornerRadius" Value="6"/>
+                    <Setter Property="Padding" Value="5 1 5 0"/>
                 </Style>
             </Style.Resources>
         </Style>
@@ -32,7 +32,7 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Style.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="10"/>
+                    <Setter Property="CornerRadius" Value="6"/>
                     <Setter Property="Padding" Value="5 2 5 2"/>
                 </Style>
             </Style.Resources>
@@ -111,7 +111,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Rectangle Fill="#F3F3F3" Margin="-3 0 -3 0"/>
+                                <Rectangle Fill="#F3F3F3" Margin="-3 0 -3 0" RadiusX="4" RadiusY="4"/>
                                 <StackPanel Height="auto" MaxWidth="{Binding ElementName=listView, Path=ActualWidth}" Margin="0 10 0 10">
                                     <TextBlock FontSize="20" FontFamily="Bold" Text="{Binding Path=StudentName}"/>
                                     <TextBlock FontSize="20" FontFamily="Bold" Text="{Binding Path=TestName}" TextWrapping="Wrap"/>
